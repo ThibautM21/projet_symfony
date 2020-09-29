@@ -1,0 +1,40 @@
+# Equivalence php/bin symfony
+php bin/console === symfony console
+
+# Creer projet
+symfony new project_name --full --version=4.*
+
+# Démarrer le serveur local symfony
+symfony server:start
+
+# Liste de toutes les commandes symfony
+symfony console
+
+# Créer un controller
+symfony console make:controller
+
+# Afficher toutes les routes
+symfony console debug:router
+
+# Affiches les routes en mode production
+symfony console debug:router --env=prod
+
+# Clear du cache de production
+symfony console cache:clear --env=prod
+
+# Créer la database avec l'ORM doctrine
+symfony console doctrine:database:create (d:d:c)
+
+# Créer une entité ou la mettre à jour si elle existe déjà
+symfony console make:entity
+
+DQL : Doctrine Query Language
+
+# Créer un fichier de migration
+symfony console make:migration
+
+# Lancer le fichier de migration
+symfony console doctrine:migrations:migrate (d:m:m)
+
+# Vérifie la cohérence entre entité/migrations/base de données
+symfony console doctrine:schema:validate

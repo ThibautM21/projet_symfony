@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition d'un article
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="my-4">Editer l'article n°
+			{{article.id}}</h1>
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+		<div class="text-center">
+			<button class=" btn btn-warning btn-sm">Editer l'article</button>
+		</div>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}
