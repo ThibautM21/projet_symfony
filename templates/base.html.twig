@@ -27,13 +27,13 @@
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mr-auto">
-						<li class="nav-item">
+						<li class="nav-item {{ ('/article/' in app.request.pathinfo) and (app.request.pathinfo != '/article/new')  ? 'active':'' }}">
 							<a class="nav-link text-white" href="{{ path('article_index') }}">Articles</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item {{ '/article/new' in app.request.pathinfo  ? 'active':'' }}">
 							<a class="nav-link text-white" href="{{ path('article_new') }}">New</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item {{ '/contact' in app.request.pathinfo  ? 'active':'' }}">
 							<a class="nav-link text-white" href="{{ path('contact') }}">Contact</a>
 						</li>
 					</ul>

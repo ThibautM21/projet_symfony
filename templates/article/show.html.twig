@@ -2,13 +2,16 @@
 
 {% block body %}
 	<div class="row">
-		<div class="card col-4 mx-auto mt-4">
+		<div class="card col-6 mx-auto mt-4 p-0">
 			<div class="card-body">
 				<h1 class="card-title">{{ article.title }}</h1>
 				<div class="card-text">
 					<p>{{ article.content }}</p>
 					<p>{{ article.createdAt | date('d/m/Y h:i:s') }}</p>
 				</div>
+			</div>
+			<div class="card-footer">
+				<a href="{{ path('article_index') }}" class="btn btn-primary">Retour liste articles</a>
 			</div>
 		</div>
 	</div>

@@ -86,7 +86,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="edit")
+     * @Route("/edit/{id}", name="edit", requirements={"page"="\d+"})
      */
     public function edit(Request $request, Article $article)
     {
@@ -115,12 +115,22 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @Route("/delete/{id}", name="delete", requirements={"page"="\d+"})
+     */
+    public function delete(Article $article)
+    {
+        $this->em->remove($article);
+        $this->em->flush();
+        return $this->redirectToRoute('article_index');
+    }
+
+    /**
      * @Route("/{id}", name="alone", requirements={"id"="\d+"})
      */
     public function article(Article $article)
     {
         if ($article)
-            return $this->render('article/article.html.twig', [
+            return $this->render('article/show.html.twig', [
                 'article' => $article
             ]);
         else
