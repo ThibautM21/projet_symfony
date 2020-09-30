@@ -1,7 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }}Hello Contact !{% endblock %}
+{% block title %}
+	{{ parent() }}Hello Contact !
+{% endblock %}
 
 {% block body %}
-    <h1>Contact ! </h1>
+	<h1 class="my-3">
+		{% trans %}Contact{% endtrans %}
+	</h1>
 {% endblock %}
+
+
+{% block body %}
+	<div>
+		{{form(form)}}
+		</div>
+	{% endblock %}

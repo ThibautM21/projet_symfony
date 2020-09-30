@@ -6,6 +6,7 @@ use App\Repository\ArticleRepository;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -23,6 +24,10 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\NotBlank (message = "Titre obligatoire")
+     * @Assert\Length(min = 5, max = 50,
+     *      minMessage = "{{ limit }} caractères minimum"),
+     *      maxMessage = "{{ limit }} caractères maximum")
      */
     private $title;
 

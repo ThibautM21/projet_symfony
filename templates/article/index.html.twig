@@ -1,42 +1,52 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}<link rel="stylesheet" href="{{ asset('style.css') }}">
-{% endblock %}
-{% block title %}Articles
+
+{% block title %}Article index
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<h1 class="row mt-4">Liste des articles</h1>
-		<div class="row">
-			{% for article in articles %}
-				<div class="col-4 my-2">
-					<div class="card">
-						<div class="card-header">
-							<h3 class="card-title m-0">{{ article.title | capitalize }}</h3>
-						</div>
-						<div class="card-body d-flex flex-column justify-content-between">
-							<div class="card-text">
-								<p>{{ article.content | slice(0, 120) ~ '...' }}</p>
-							</div>
-							{% if article.updatedAt %}
-								<small class="text-muted">Dernière modification : le
-									{{ article.updatedAt | date('d/m/Y à h:i:s')}}</small>
-							{% else %}
-								<small class="text-muted">Date de création : le
-									{{ article.createdAt | date('d/m/Y à h:i:s')}}
-								</small>
-							{% endif %}
-						</div>
-						<div
-							class="card-footer justify-content-center d-flex">
-							{# <p>{{ article.updatedAt ? article.updatedAt | date('d/m/Y h:i:s')}}</p> #}
-							<a class="btn btn-primary btn-sm" href="{{ path('article_alone', {id:article.id}) }}">Voir</a>
-							<a class="btn btn-warning btn-sm" href="{{ path('article_edit', {id:article.id}) }}">Editer</a>
-							<a class="btn btn-danger btn-sm" href="{{ path('article_delete', {id:article.id}) }}">Supprimer</a>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
-		</div>
+	<div class="d-flex align-items-center">
+		<h1 class="my-4">Article index</h1>
+		{% if is_granted('ROLE_ADMIN') %}
+			<a class="btn btn-primary btn-sm ml-auto" href="{{ path('article_new') }}">Create new</a>
+		{% endif %}
 	</div>
-{% endblock %}
+	<table class="table table-sm table-striped text-center">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Title</th>
+				<th>Content</th>
+				<th>Creation date</th>
+				<th>Last modification date</th>
+				{% if is_granted('ROLE_ADMIN') %}
+					<th>Actions</th>
+				{% endif %}
+			</tr>
+		</thead>
+	</tr>
+</thead>
+<tbody>
+	{% for article in articles %}
+		<tr>
+			<td>{{ article.id }}</td>
+			<td>
+				<a class="text-primary font-weight-bold" href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a>
+			</td>
+			<td>{{ article.content| striptags | slice(0,50)  ~ '...'}}</td>
+			<td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+			<td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+			{% if is_granted('ROLE_ADMIN') %}
+				<td class="d-flex align-items-center">
+					{{ include('article/_delete_form.html.twig') }}
+					<a class="btn btn-warning btn-sm" href="{{ path('article_edit', {'id': article.id}) }}">Edit</a>
+				</td>
+			{% endif %}
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan="6">No records found</td>
+		</tr>
+	{% endfor %}
+</tbody></tbody></table><div class="text-center">{% if previous >= 0 %}
+<a class="btn btn-primary btn-sm" href="{{ path('article_index', {offset: previous }) }}">Previous</a>{% endif %}{% if next < articles|length %}
+<a class="btn btn-success btn-sm" href="{{ path('article_index', {offset: next }) }}">Next</a>{% endif %}</div>{% endblock %}

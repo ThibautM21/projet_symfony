@@ -6,48 +6,58 @@
 			{% block title %}Welcome!
 			{% endblock %}
 		</title>
-		<!-- Font Awesome -->
-		<link
-		rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-		<!-- Google Fonts -->
-		<link
-		rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
-		<!-- Bootstrap core CSS -->
-		<link
-		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-		<!-- Material Design Bootstrap -->
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> {% block stylesheets %}{% endblock %}
-		</head>
-		<body>
-			<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-				<a class="navbar-brand text-white" href="{{ path('home')}}">Navbar</a>
-				<button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+		{% block stylesheets %}
+			<!-- Font Awesome -->
+			<link
+			rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+			<!-- Google Fonts -->
+			<link
+			rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+			<!-- Bootstrap core CSS -->
+			<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+			<!-- Material Design Bootstrap -->
+			<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+		{% endblock %}
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand text-white" href="{{ path('home')}}">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				Home</a>
+			<button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item {{ ('/article/' in app.request.pathinfo) and (app.request.pathinfo != '/article/new')  ? 'active':'' }}">
-							<a class="nav-link text-white" href="{{ path('article_index') }}">Articles</a>
-						</li>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item {{ ('/article/' in app.request.pathinfo) and (app.request.pathinfo != '/article/new')  ? 'active':'' }}">
+						<a class="nav-link text-white" href="{{ path('article_index') }}">Articles</a>
+					</li>
+					{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item {{ '/article/new' in app.request.pathinfo  ? 'active':'' }}">
-							<a class="nav-link text-white" href="{{ path('article_new') }}">New</a>
+							<a class="nav-link text-white" href="{{ path('article_new') }}">New
+								<i class="fa fa-plus" aria-hidden="true"></i>
+							</a>
 						</li>
-						<li class="nav-item {{ '/contact' in app.request.pathinfo  ? 'active':'' }}">
-							<a class="nav-link text-white" href="{{ path('contact') }}">Contact</a>
-						</li>
-					</ul>
-				</div>
-			</nav>
-			{% block body %}{% endblock %}
-			<!-- JQuery -->
-			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-			<!-- Bootstrap tooltips -->
-			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-			<!-- Bootstrap core JavaScript -->
-			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
-			<!-- MDB core JavaScript -->
-			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
-			{% block javascripts %}{% endblock %}
+					{% endif %}
+					<li class="nav-item {{ '/contact' in app.request.pathinfo  ? 'active':'' }}">
+						<a class="nav-link text-white" href="{{ path('contact') }}">Contact</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						{% if app.user %}
+							<a class="btn btn-outline-light nav-link text-white" href="{{ path('app_logout') }}">Deconnect
+								{{ app.user.username ~ app.user.roles|json_encode()}}
+							</a>
+						{% else %}
+							<a class="btn btn-outline-light nav-link text-white" href="{{ path('app_login') }}">Login
+							</a>
+						{% endif %}
+					</li>
+				</ul>
+			</div>
 		</body>
-	</html>
+	</body>
+</html></body></html></nav><div class="container"> {% block body %}{% endblock %}</div>{% block javascripts %}<!-- JQuery --><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><!-- Bootstrap tooltips --><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script><!-- Bootstrap core JavaScript --><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script><!-- MDB core JavaScript --><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>{% endblock %}</body></html>

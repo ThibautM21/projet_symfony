@@ -16,7 +16,7 @@ class FakerFixtures extends Fixture
         for ($i = 1; $i <= 40; $i++) {
             $article = new Article();
             $article->setTitle($faker->sentence($nbWords = 3, $variableNbWords = false));
-            $article->setContent($faker->paragraph);
+            $article->setContent($faker->text);
             $manager->persist($article);
             $manager->flush();
         }
