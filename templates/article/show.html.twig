@@ -21,6 +21,18 @@
 				<td>{{ article.content|raw }}</td>
 			</tr>
 			<tr>
+				<th>Author email</th>
+				<td>{{ article.author.email }}</td>
+			</tr>
+			<tr>
+				<th>Author role</th>
+				<td>
+					{% for role in article.author.roles %}
+						{{ role }}
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
 				<th>Creation date</th>
 				<td>{{ article.createdAt|date('Y-m-d H:i:s') }}</td>
 			</tr>

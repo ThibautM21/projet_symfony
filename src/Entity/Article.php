@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use App\Repository\ArticleRepository;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,6 +46,19 @@ class Article
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    private $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
     public function getId(): ?int
     {
@@ -101,6 +115,21 @@ class Article
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new \DateTime('now', new DateTimeZone('Europe/Paris'));
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setAuthor(): self
+    {
+        $this->author = $this->user;
 
         return $this;
     }

@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/article")
- * @IsGranted("ROLE_USER")
  */
 class ArticleController extends AbstractController
 {
@@ -33,11 +32,11 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("/new", name="article_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_USER")
      */
     public function new(Request $request): Response
     {
-        $article = new Article();
+        $article = new Article($this->getUser());
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -67,10 +66,21 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="article_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_USER")
      */
-    public function edit(Request $request, Article $article): Response
+    public function edit(ArticleRepository $articleRepository, Request $request, Article $article): Response
     {
+
+        if ($this->getUser()->getEmail() != $article->getAuthor()->getEmail() && !in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            $offset = max(0, $request->query->getInt('offset', 0));
+            $paginator = $articleRepository->getArticlePaginator($offset);
+            return $this->render('article/index.html.twig', [
+                'articles' => $paginator,
+                'previous' => $offset - ArticleRepository::PAGINATOR_PER_PAGE,
+                'next' => min(count($paginator), $offset + ArticleRepository::PAGINATOR_PER_PAGE)
+            ]);
+        }
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -88,10 +98,20 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("/{id}", name="article_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_USER")
      */
-    public function delete(Request $request, Article $article): Response
+    public function delete(ArticleRepository $articleRepository, Request $request, Article $article): Response
     {
+        if ($this->getUser()->getEmail() != $article->getAuthor()->getEmail() && !in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            $offset = max(0, $request->query->getInt('offset', 0));
+            $paginator = $articleRepository->getArticlePaginator($offset);
+            return $this->render('article/index.html.twig', [
+                'articles' => $paginator,
+                'previous' => $offset - ArticleRepository::PAGINATOR_PER_PAGE,
+                'next' => min(count($paginator), $offset + ArticleRepository::PAGINATOR_PER_PAGE)
+            ]);
+        }
+
         if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($article);

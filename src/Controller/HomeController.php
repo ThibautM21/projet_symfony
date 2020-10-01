@@ -18,11 +18,10 @@ class HomeController extends AbstractController
     public function index(Request $request, ArticleRepository $articleRepository)
     {
         // // $article = ['test' => 2, 'test3' => 4];
-        $articles = $articleRepository->findAll();
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $articleRepository->getArticlePaginator($offset);
         return $this->render('article/index.html.twig', [
-            'articles' => $articles,
+            'articles' => $paginator,
             'previous' => $offset - ArticleRepository::PAGINATOR_PER_PAGE,
             'next' => min(count($paginator), $offset + ArticleRepository::PAGINATOR_PER_PAGE)
         ]);

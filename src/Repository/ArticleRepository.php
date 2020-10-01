@@ -16,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class ArticleRepository extends ServiceEntityRepository
 {
 
-    public const PAGINATOR_PER_PAGE = 20;
+    public const PAGINATOR_PER_PAGE = 5;
 
     public function __construct(ManagerRegistry $registry)
     {

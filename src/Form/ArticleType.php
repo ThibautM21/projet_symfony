@@ -32,6 +32,7 @@ class ArticleType extends AbstractType
                     'rows' => '5'
                 ]
             ]);
+        //->add('author');
         // ->add('save', SubmitType::class, ['label' => 'Créer article']);
     }
 

@@ -6,19 +6,20 @@
 {% block body %}
 	<div class="d-flex align-items-center">
 		<h1 class="my-4">Article index</h1>
-		{% if is_granted('ROLE_ADMIN') %}
+		{% if is_granted('ROLE_USER') %}
 			<a class="btn btn-primary btn-sm ml-auto" href="{{ path('article_new') }}">Create new</a>
 		{% endif %}
 	</div>
-	<table class="table table-sm table-striped text-center">
+	<table class="table table-sm table-striped">
 		<thead>
 			<tr>
 				<th>ID</th>
 				<th>Title</th>
 				<th>Content</th>
-				<th>Creation date</th>
-				<th>Last modification date</th>
-				{% if is_granted('ROLE_ADMIN') %}
+				<th>Author</th>
+				<th>Created at</th>
+				<th>Updated at</th>
+				{% if is_granted('ROLE_USER') %}
 					<th>Actions</th>
 				{% endif %}
 			</tr>
@@ -28,17 +29,22 @@
 <tbody>
 	{% for article in articles %}
 		<tr>
-			<td>{{ article.id }}</td>
-			<td>
+			<td class="align-middle">{{ article.id }}</td>
+			<td class="align-middle">
 				<a class="text-primary font-weight-bold" href="{{ path('article_show', {'id': article.id}) }}">{{ article.title }}</a>
 			</td>
-			<td>{{ article.content| striptags | slice(0,50)  ~ '...'}}</td>
-			<td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-			<td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-			{% if is_granted('ROLE_ADMIN') %}
-				<td class="d-flex align-items-center">
-					{{ include('article/_delete_form.html.twig') }}
-					<a class="btn btn-warning btn-sm" href="{{ path('article_edit', {'id': article.id}) }}">Edit</a>
+			<td style='width: 200px' class='align-middle text-left'>{{ article.content| striptags | slice(0,400)  ~ '...'}}</td>
+			<td class="align-middle">{{ article.author.email}}</td>
+			<td class="align-middle">{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+			<td class="align-middle">{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+			{% if is_granted('ROLE_USER') %}
+				<td class="align-middle">
+					{% if app.user.username == article.author.email or 'ROLE_ADMIN' in app.user.roles %}
+						<div class="d-flex align-items-center">
+							{{ include('article/_delete_form.html.twig') }}
+							<a class="btn btn-warning btn-sm" href="{{ path('article_edit', {'id': article.id}) }}">Edit</a>
+						</div>
+					{% endif %}
 				</td>
 			{% endif %}
 		</tr>
