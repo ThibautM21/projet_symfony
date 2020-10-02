@@ -34,6 +34,15 @@ class ArticleRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
+    public function getArticlePaginatorQuery()
+    {
+        $query =  $this->createQueryBuilder('a')
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery();
+
+        return $query;
+    }
+
     // /**
     //  * @return Article[] Returns an array of Article objects
     //  */

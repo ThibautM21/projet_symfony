@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,22 @@ class ArticleController extends AbstractController
             'previous' => $offset - ArticleRepository::PAGINATOR_PER_PAGE,
             'next' => min(count($paginator), $offset + ArticleRepository::PAGINATOR_PER_PAGE)
         ]);
+    }
+
+    /**
+     * @Route("/test", name="article_index2", methods={"GET"})
+     */
+    public function index2(ArticleRepository $articleRepository, PaginatorInterface $paginator, Request $request)
+    {
+        $query = $articleRepository->getArticlePaginatorQuery();
+        $articles = $paginator->paginate(
+            $query, /* query NOT result (pas opti) */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        // parameters to template
+        return $this->render('article/index2.html.twig', ['articles' => $articles]);
     }
 
     /**

@@ -10,13 +10,14 @@
 			<a class="btn btn-primary btn-sm ml-auto" href="{{ path('article_new') }}">Create new</a>
 		{% endif %}
 	</div>
-	<small class="text-muted">Number of articles :
-		{{ articles|length }}</small>
+	<div class="count">Number of articles :
+		{{ articles.getTotalItemCount }}
+	</div>
 	<table class="table table-sm table-striped">
 		<thead>
 			<tr>
-				<th scope="col">ID</th>
-				<th scope="col">Title</th>
+				<th scope="col">{{ knp_pagination_sortable(articles, 'ID', 'a.id') }}</th>
+				<th scope="col">{{ knp_pagination_sortable(articles, 'Title', 'a.title') }}</th>
 				<th scope="col">Content</th>
 				<th scope="col">Author</th>
 				<th scope="col">Created at</th>
@@ -56,9 +57,10 @@
 		{% endfor %}
 	</tbody>
 </tbody></table><div class="text-center">
-{% if previous >= 0 %}
-	<a class="btn btn-primary btn-sm" href="{{ path('article_index', {offset: previous }) }}">Previous</a>
-{% endif %}
-{% if next < articles|length %}
-	<a class="btn btn-success btn-sm" href="{{ path('article_index', {offset: next }) }}">Next</a>
-{% endif %}</div>{% endblock %}
+<div class="row">
+	<div class="col-12 my-3 text-center">
+		<div class="d-flex justify-content-center">
+			{{ knp_pagination_render(articles) }}
+		</div>
+	</div>
+</div>{% endblock %}

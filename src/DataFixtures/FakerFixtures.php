@@ -48,7 +48,7 @@ class FakerFixtures extends Fixture
         for ($i = 1; $i <= 40; $i++) {
             $article = new Article($users[array_rand($users)]);
             $article->setTitle($faker->sentence($nbWords = 3, $variableNbWords = false));
-            $article->setContent($faker->text);
+            $article->setContent($faker->randomHtml(2, 3));
             $manager->persist($article);
         }
 
